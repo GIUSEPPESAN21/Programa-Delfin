@@ -1,0 +1,10 @@
+name: ed-orchestrator
+
+conda_env: python_env
+
+entry_points:
+  main:
+    parameters:
+      episodes: {type: int, default: 150}
+    command: >
+      python simulation/experiments/train_dqn.py

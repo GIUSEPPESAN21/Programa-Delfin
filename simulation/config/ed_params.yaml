@@ -1,0 +1,88 @@
+# Emergency Department simulation parameters (literature-calibrated)
+# References: Applied Sciences 2024; Green 2006 ESI; Vural 2025 JMIR
+
+simulation:
+  duration_hours: 24
+  warmup_hours: 2
+  sync_interval_seconds: 30
+  scenarios_per_minute: 500
+
+capacity:
+  beds: 25
+  consult_rooms: 4
+  imaging_rooms: 2
+  triage_stations: 2
+
+esi_distribution:
+  1: 0.02
+  2: 0.08
+  3: 0.25
+  4: 0.40
+  5: 0.25
+
+arrival:
+  base_rate_per_hour: 12
+  peak_multiplier: 2.5
+  peak_start_hour: 10
+  peak_end_hour: 14
+
+service_times:
+  triage:
+    mu: 8.0
+    sigma: 3.0
+  consultation:
+    mu: 45.0
+    sigma: 20.0
+  imaging:
+    mu: 30.0
+    sigma: 15.0
+  disposition:
+    mu: 15.0
+    sigma: 8.0
+
+esi_service_multipliers:
+  1: 2.5
+  2: 1.8
+  3: 1.2
+  4: 1.0
+  5: 0.8
+
+imaging_probability:
+  1: 0.95
+  2: 0.85
+  3: 0.60
+  4: 0.30
+  5: 0.10
+
+admission_probability:
+  1: 0.90
+  2: 0.70
+  3: 0.35
+  4: 0.10
+  5: 0.02
+
+reward_weights:
+  alpha: 2.0   # critical wait penalty
+  beta: 0.5    # LOS penalty
+  gamma: 0.3   # max occupancy penalty
+  delta: 0.2   # throughput reward
+  lambda_fair: 1.0  # equity penalty
+
+dqn:
+  gamma: 0.99
+  learning_rate: 0.0001
+  batch_size: 64
+  replay_buffer_size: 50000
+  target_update_freq: 100
+  epsilon_start: 1.0
+  epsilon_end: 0.05
+  epsilon_decay_episodes: 10000
+  hidden_layers: [256, 256, 128]
+  training_episodes: 150
+  eval_episodes: 30
+
+experiments:
+  monte_carlo_seeds: 10
+  confidence_level: 0.95
+  robustness_demand_increase: 0.40
+  robustness_resource_reduction: 0.25

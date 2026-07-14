@@ -1,0 +1,5 @@
+Política,LOS medio (min),LOS P95 (min),Ocupación máx.,Espera crítica (min),Índice equidad,Throughput
+ESI+FIFO,99.1 ± 3.3,199.0,53.5,0.0,0.000,320
+SRPT,99.1 ± 3.3,199.0,53.5,0.0,0.000,320
+Heurístico,99.1 ± 3.3,199.0,53.5,0.0,0.000,320
+DQN+DT,98.8 ± 4.2,198.2,52.6,0.0,0.000,320

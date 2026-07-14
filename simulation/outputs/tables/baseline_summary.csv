@@ -1,0 +1,4 @@
+policy,mean_los_mean,mean_los_ci_lo,mean_los_ci_hi,max_occupancy_mean,max_occupancy_ci_lo,max_occupancy_ci_hi,mean_critical_wait_mean,mean_critical_wait_ci_lo,mean_critical_wait_ci_hi,equity_index_mean,equity_index_ci_lo,equity_index_ci_hi,throughput_mean,throughput_ci_lo,throughput_ci_hi
+esi_fifo,99.14789576356921,97.25092873029199,100.97720040495095,53.5,50.2,56.802499999999995,0.0,0.0,0.0,0.0,0.0,0.0,319.8,312.09250000000003,327.0
+srpt,99.14789576356921,97.16571783985165,101.02888107608085,53.5,49.9,57.0,0.0,0.0,0.0,0.0,0.0,0.0,319.8,311.3,328.1025
+heuristic,99.14789576356921,97.06072659419517,101.13736570320435,53.5,50.1,56.9,0.0,0.0,0.0,0.0,0.0,0.0,319.8,311.4975,327.5025

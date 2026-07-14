@@ -1,0 +1,105 @@
+Metadata-Version: 2.4
+Name: ed-orchestrator
+Version: 0.1.0
+Summary: Hybrid cyber-physical hospital orchestration for emergency departments
+Requires-Python: >=3.11
+Description-Content-Type: text/markdown
+Requires-Dist: simpy>=4.1.1
+Requires-Dist: gymnasium>=1.0.0
+Requires-Dist: numpy<2.0.0,>=1.24.0
+Requires-Dist: pandas>=2.0.0
+Requires-Dist: torch>=2.0.0
+Requires-Dist: scipy>=1.10.0
+Requires-Dist: shap>=0.43.0
+Requires-Dist: pyyaml>=6.0
+Requires-Dist: pydantic>=2.6.0
+Requires-Dist: fastapi>=0.110.0
+Requires-Dist: uvicorn[standard]>=0.27.0
+Requires-Dist: streamlit>=1.32.0
+Requires-Dist: mlflow>=2.10.0
+Requires-Dist: httpx>=0.27.0
+Requires-Dist: python-dotenv>=1.0.0
+Provides-Extra: gcp
+Requires-Dist: google-cloud-firestore>=2.16.0; extra == "gcp"
+Requires-Dist: google-cloud-bigquery>=3.20.0; extra == "gcp"
+Requires-Dist: google-cloud-secret-manager>=2.20.0; extra == "gcp"
+Provides-Extra: rl
+Requires-Dist: ray[rllib]>=2.9.0; extra == "rl"
+Provides-Extra: dev
+Requires-Dist: pytest>=8.0.0; extra == "dev"
+Requires-Dist: ruff>=0.3.0; extra == "dev"
+Requires-Dist: dvc>=3.0.0; extra == "dev"
+Provides-Extra: all
+Requires-Dist: ed-orchestrator[dev,gcp,rl]; extra == "all"
+
+# Sistema Ciberfísico Híbrido de Orquestación Hospitalaria en Urgencias
+
+Investigación y sistema de producción para orquestación operativa en departamentos de urgencias mediante Gemelo Digital activo-bidireccional, Deep Reinforcement Learning (DQN) e Explainable AI (XAI).
+
+## Estructura del proyecto
+
+```
+Research Delifn/
+├── src/ed_orchestrator/       # Paquete de producción (FastAPI, Streamlit, RL)
+├── simulation/                # Simulación reproducible (SimPy, experimentos)
+├── manuscript/                # Manuscrito científico DOCX
+├── infra/                     # Docker, GCP, GitHub Actions
+├── mlops/                     # DVC pipeline, MLflow
+├── docs/ARCHITECTURE.md       # Documentación técnica de arquitectura
+└── tests/                     # Tests pytest
+```
+
+## Instalación
+
+```bash
+pip install -e .
+pip install -r requirements/dev.txt
+cd simulation && pip install -r requirements.txt
+```
+
+## Ejecución reproducible (investigación)
+
+```bash
+cd simulation
+python experiments/evaluate_baselines.py
+python experiments/train_dqn.py
+python experiments/robustness.py
+python generate_manuscript_assets.py
+python ../manuscript/build_docx.py
+```
+
+## Despliegue local (Docker)
+
+```bash
+docker compose -f infra/docker/docker-compose.yml up --build
+# API: http://localhost:8080/health
+# Dashboard: http://localhost:8501
+```
+
+## Despliegue GCP
+
+```bash
+export GCP_PROJECT_ID=your-project
+bash scripts/deploy_gcp.sh latest
+```
+
+## API endpoints
+
+| Endpoint | Descripción |
+|---|---|
+| `GET /health` | Estado del servicio y modelo |
+| `POST /api/v1/telemetry` | Ingesta telemetría + look-ahead |
+| `POST /api/v1/recommend` | Recomendación DQN + XAI (shadow mode) |
+| `GET /api/v1/twin/state` | Estado del gemelo digital |
+
+## Manuscrito
+
+El manuscrito científico se genera en:
+`manuscript/Orquestacion_Urgencias_Manuscrito.docx`
+
+## Referencias clave
+
+- Soster et al. (2025) JAMIA Open — MLOps + optimización de turnos
+- Liu et al. (2020) — DRL en urgencias (PMC7349722)
+- Vural et al. (2025) JMIR — Predicción de hacinamiento
+- Applied Sciences (2024) — DES + ML scheduling

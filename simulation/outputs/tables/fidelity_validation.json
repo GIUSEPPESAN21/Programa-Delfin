@@ -1,0 +1,21 @@
+{
+  "ks_tests": {
+    "triage": {
+      "statistic": 0.0,
+      "p_value": 1.0
+    },
+    "consultation": {
+      "statistic": 0.0,
+      "p_value": 1.0
+    },
+    "imaging": {
+      "statistic": 0.0,
+      "p_value": 1.0
+    },
+    "disposition": {
+      "statistic": 0.0,
+      "p_value": 1.0
+    }
+  },
+  "mape_hourly_arrivals_pct": 44.79166666666667
+}

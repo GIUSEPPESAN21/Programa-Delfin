@@ -1,0 +1,38 @@
+stages:
+  prepare:
+    cmd: python scripts/prepare_data.py
+    deps:
+      - data/raw/
+    outs:
+      - data/processed/ed_logs.parquet
+
+  validate_twin:
+    cmd: cd simulation && python -c "from ed_digital_twin.twin import EmergencyDepartmentTwin; print(EmergencyDepartmentTwin.validate_fidelity())"
+    deps:
+      - simulation/ed_digital_twin/
+      - simulation/config/ed_params.yaml
+
+  train:
+    cmd: python simulation/experiments/train_dqn.py
+    deps:
+      - simulation/agents/
+      - simulation/ed_digital_twin/
+      - data/processed/ed_logs.parquet
+    outs:
+      - simulation/outputs/dqn_model.pt
+
+  evaluate:
+    cmd: |
+      cd simulation
+      python experiments/evaluate_baselines.py
+      python experiments/robustness.py
+      python generate_manuscript_assets.py
+    deps:
+      - simulation/outputs/dqn_model.pt
+
+  export:
+    cmd: python scripts/export_model.py
+    deps:
+      - simulation/outputs/dqn_model.pt
+    outs:
+      - models/dqn_model.pt

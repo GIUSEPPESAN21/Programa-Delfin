@@ -1,0 +1,3 @@
+[console_scripts]
+ed-api = ed_orchestrator.api.main:run
+ed-dashboard = ed_orchestrator.dashboard.app:run
