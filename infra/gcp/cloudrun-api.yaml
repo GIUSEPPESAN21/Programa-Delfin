@@ -1,0 +1,27 @@
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: ed-orchestrator-api
+  annotations:
+    run.googleapis.com/ingress: all
+spec:
+  template:
+    metadata:
+      annotations:
+        autoscaling.knative.dev/maxScale: "10"
+    spec:
+      containerConcurrency: 80
+      timeoutSeconds: 300
+      containers:
+        - image: REGION-docker.pkg.dev/PROJECT_ID/ed-orchestrator/api:latest
+          ports:
+            - containerPort: 8080
+          env:
+            - name: USE_GCP
+              value: "true"
+            - name: GCP_PROJECT
+              value: PROJECT_ID
+          resources:
+            limits:
+              cpu: "2"
+              memory: 2Gi

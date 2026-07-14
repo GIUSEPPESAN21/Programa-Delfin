@@ -1,0 +1,36 @@
+name: Deploy
+
+on:
+  push:
+    tags:
+      - "v*"
+
+env:
+  REGION: us-central1
+  PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.GCP_SA_KEY }}
+      - uses: google-github-actions/setup-gcloud@v2
+      - name: Configure Docker
+        run: gcloud auth configure-docker ${{ env.REGION }}-docker.pkg.dev
+      - name: Build and push API
+        run: |
+          docker build -f infra/docker/Dockerfile.api \
+            -t ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/ed-orchestrator/api:${{ github.ref_name }} .
+          docker push ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/ed-orchestrator/api:${{ github.ref_name }}
+      - name: Deploy Cloud Run API
+        run: |
+          gcloud run deploy ed-orchestrator-api \
+            --image ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/ed-orchestrator/api:${{ github.ref_name }} \
+            --region ${{ env.REGION }} \
+            --platform managed \
+            --allow-unauthenticated \
+            --set-env-vars USE_GCP=true,GCP_PROJECT=${{ env.PROJECT_ID }}

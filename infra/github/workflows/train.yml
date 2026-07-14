@@ -1,0 +1,26 @@
+name: Train
+
+on:
+  workflow_dispatch:
+    inputs:
+      episodes:
+        description: Training episodes
+        default: "800"
+
+jobs:
+  train:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install
+        run: pip install -e ".[dev]" && pip install -r requirements/dev.txt
+      - name: Train DQN
+        run: python simulation/experiments/train_dqn.py
+      - name: Upload model
+        uses: actions/upload-artifact@v4
+        with:
+          name: dqn-model
+          path: simulation/outputs/dqn_model.pt
